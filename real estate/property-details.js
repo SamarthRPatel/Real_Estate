@@ -101,8 +101,12 @@ async function render() {
             <aside class="details-side">
                 <div class="card contact-agent-card">
                     <h3>Interested in this property?</h3>
-                    <a class="btn btn-primary btn-block" href="contact_seller.html?property=${property._id}">Contact Seller</a>
+                    ${property.status === "available" ? `
+                        <button class="btn btn-primary btn-block" id="request-btn">${property.listingType === "rent" ? "Rent This House" : "Buy This House"}</button>
+                    ` : ""}
+                    <a class="btn btn-ghost btn-block" href="contact_seller.html?property=${property._id}" style="margin-top:8px">Contact Seller</a>
                     <button class="btn btn-ghost btn-block" id="save-btn" style="margin-top:8px">Save to Favorites</button>
+                    <p id="request-status" style="margin-top:10px; font-size:13px"></p>
                 </div>
 
                 ${monthly ? `
@@ -127,6 +131,28 @@ async function render() {
             document.getElementById("hero-image").src = images[Number(thumb.dataset.thumb)];
             thumbStrip.querySelectorAll("img").forEach((img) => img.classList.remove("active"));
             thumb.classList.add("active");
+        });
+    }
+
+    const requestBtn = document.getElementById("request-btn");
+    if (requestBtn) {
+        requestBtn.addEventListener("click", async () => {
+            const verb = property.listingType === "rent" ? "rent" : "buy";
+            if (!confirm(`Send a request to ${verb} this property? The seller will need to accept it.`)) return;
+
+            const statusEl = document.getElementById("request-status");
+            try {
+                await apiFetch(`properties/${property._id}/request`, { method: "POST" });
+                statusEl.textContent = "Request sent! The seller will review it.";
+                statusEl.style.color = "var(--accent)";
+                requestBtn.disabled = true;
+                requestBtn.textContent = "Request Sent";
+            } catch (error) {
+                statusEl.textContent = error.message.includes("log in") || error.message.includes("Not authenticated")
+                    ? "Please log in to request this property."
+                    : error.message;
+                statusEl.style.color = "var(--danger)";
+            }
         });
     }
 

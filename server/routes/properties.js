@@ -1,5 +1,6 @@
 const express = require("express");
 const Property = require("../models/Property");
+const PropertyRequest = require("../models/PropertyRequest");
 const requireAuth = require("../middleware/requireAuth");
 const requireRole = require("../middleware/requireRole");
 
@@ -12,10 +13,10 @@ const SORT_OPTIONS = {
 };
 
 router.get("/", async (req, res) => {
-  const { listingType, propertyType, search, minBedrooms, minBathrooms, minPrice, maxPrice, sort } = req.query;
-  // Only actively available listings show up in the public buy/rent feed;
-  // sold/rented properties stay visible to their seller and in admin reports.
-  const filter = { status: "available" };
+  const { listingType, propertyType, search, minBedrooms, minBathrooms, minPrice, maxPrice, sort, status } = req.query;
+  // By default only actively available listings show up (Buy/Rent pages).
+  // Passing status=sold_or_rented switches to the public "Sold/Rented" archive page instead.
+  const filter = { status: status === "sold_or_rented" ? { $in: ["sold", "rented"] } : "available" };
   if (listingType) filter.listingType = listingType;
   if (propertyType) filter.propertyType = propertyType;
   if (search) filter.title = { $regex: search, $options: "i" };
@@ -111,6 +112,37 @@ router.post("/", requireAuth, async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: "Failed to create listing" });
   }
+});
+
+router.post("/:id/request", requireAuth, async (req, res) => {
+  const property = await Property.findById(req.params.id);
+  if (!property) {
+    return res.status(404).json({ error: "Listing not found" });
+  }
+  if (property.status !== "available") {
+    return res.status(400).json({ error: "This property isn't available anymore" });
+  }
+  if (property.sellerId.toString() === req.user.id) {
+    return res.status(400).json({ error: "You can't request your own listing" });
+  }
+
+  const existing = await PropertyRequest.findOne({
+    propertyId: property._id,
+    buyerId: req.user.id,
+    status: "pending",
+  });
+  if (existing) {
+    return res.status(409).json({ error: "You already have a pending request for this property" });
+  }
+
+  const request = await PropertyRequest.create({
+    propertyId: property._id,
+    buyerId: req.user.id,
+    sellerId: property.sellerId,
+    requestType: property.listingType === "rent" ? "rent" : "buy",
+  });
+
+  res.status(201).json({ request });
 });
 
 router.patch("/:id/approve", requireAuth, requireRole("admin"), async (req, res) => {

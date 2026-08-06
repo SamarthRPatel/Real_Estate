@@ -17,6 +17,7 @@
             <button class="item" data-view="saved"><i data-lucide="heart"></i> Saved Properties</button>
             <button class="item" data-view="listings"><i data-lucide="home"></i> My Listings</button>
             <button class="item" data-view="messages"><i data-lucide="mail"></i> Messages</button>
+            <button class="item" data-view="requests"><i data-lucide="handshake"></i> Requests</button>
             <button class="item" data-view="profile"><i data-lucide="user"></i> Profile</button>
             <button class="item" id="logout-btn" style="margin-top:auto"><i data-lucide="log-out"></i> Logout</button>
         </aside>
@@ -52,6 +53,18 @@
                 <h1>Messages</h1>
                 <p>Inquiries buyers have sent about your listings.</p>
                 <div id="messages-list"><p>Loading...</p></div>
+            </section>
+
+            <section data-view-panel="requests" hidden>
+                <h1>Requests</h1>
+
+                <h2 style="margin-top:0">Requests You've Received</h2>
+                <p>Buy/Rent requests on your listings — accept one and the property is marked sold/rented automatically.</p>
+                <div id="incoming-requests-list"><p>Loading...</p></div>
+
+                <h2>Your Requests</h2>
+                <p>Buy/Rent requests you've sent to sellers.</p>
+                <div id="outgoing-requests-list"><p>Loading...</p></div>
             </section>
 
             <section data-view-panel="profile" hidden>

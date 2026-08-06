@@ -47,6 +47,10 @@ async function sendInquiryNotificationEmail(toEmail, data) {
   await getTransporter().sendMail({
     from: `"DreamHome" <${process.env.EMAIL_USER}>`,
     to: toEmail,
+    // "From" must stay the app's authenticated sending account — mail providers
+    // block/rewrite a From address you don't own. Reply-To is how the seller's
+    // reply actually reaches the buyer instead of bouncing back to the app.
+    replyTo: `"${data.buyerName}" <${data.buyerEmail}>`,
     subject: `New inquiry about "${data.propertyTitle}"`,
     html,
   });

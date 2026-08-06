@@ -14,6 +14,23 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    // If the buyer is logged in, prefill from their real account instead of a
+    // freely-typed box — the email in particular needs to be trustworthy since
+    // it becomes the seller's Reply-To address.
+    try {
+        const { user } = await apiFetch("auth/me");
+        document.getElementById("name").value = `${user.firstName} ${user.lastName}`;
+        document.getElementById("phone").value = user.phone || "";
+
+        const emailField = document.getElementById("email");
+        emailField.value = user.email;
+        emailField.readOnly = true;
+        emailField.style.backgroundColor = "var(--bg)";
+        emailField.insertAdjacentHTML("afterend", `<p style="font-size:12px; color:var(--text-muted); margin-top:-8px">Using your account email</p>`);
+    } catch (error) {
+        // Not logged in — leave the fields blank for manual entry, as before.
+    }
+
     document.getElementById("contact-form").addEventListener("submit", async function (event) {
         event.preventDefault();
 

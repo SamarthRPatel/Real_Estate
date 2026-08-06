@@ -1,6 +1,18 @@
 import { apiFetch, escapeHtml } from "./js/api.js";
 import { requireAuth, wireLogout } from "./auth-guard.js";
 
+function statusActionButtons(property) {
+    const soldOrRentedLabel = property.listingType === "rent" ? "Rented" : "Sold";
+
+    if (property.status === "available") {
+        return `<button class="btn btn-ghost btn-sm" data-mark-status="${property._id}" data-status="${property.listingType === "rent" ? "rented" : "sold"}">Mark as ${soldOrRentedLabel}</button>`;
+    }
+    if (property.status === "sold" || property.status === "rented") {
+        return `<button class="btn btn-ghost btn-sm" data-mark-status="${property._id}" data-status="available">Mark as Available</button>`;
+    }
+    return "";
+}
+
 function propertyCard(property, options = {}) {
     const priceLabel = `$${Number(property.price).toLocaleString()}${property.listingType === "rent" ? "/mo" : ""}`;
     const statusPill = property.status
@@ -17,6 +29,7 @@ function propertyCard(property, options = {}) {
                 ${statusPill ? `<div style="margin-top:6px">${statusPill}</div>` : ""}
                 <div class="listing-actions">
                     ${options.removable ? `<button class="btn btn-ghost btn-sm" data-remove-favorite="${property._id}">Remove</button>` : ""}
+                    ${options.statusActions ? statusActionButtons(property) : ""}
                     ${options.deletable ? `<button class="btn btn-danger btn-sm" data-delete-listing="${property._id}">Delete</button>` : ""}
                 </div>
             </div>
@@ -55,11 +68,11 @@ async function loadMyListings() {
         document.getElementById("stat-pending").textContent = properties.filter(p => p.status === "pending").length;
 
         const html = properties.length
-            ? properties.map((p) => propertyCard(p, { deletable: true })).join("")
+            ? properties.map((p) => propertyCard(p, { deletable: true, statusActions: true })).join("")
             : `<p>You haven't listed any properties yet. <a href="sell.html">List one now</a>.</p>`;
         listingsGrid.innerHTML = html;
         overviewGrid.innerHTML = properties.length
-            ? properties.slice(0, 3).map((p) => propertyCard(p, { deletable: true })).join("")
+            ? properties.slice(0, 3).map((p) => propertyCard(p, { deletable: true, statusActions: true })).join("")
             : `<p>You haven't listed any properties yet. <a href="sell.html">List one now</a>.</p>`;
     } catch (error) {
         listingsGrid.innerHTML = "<p>Could not load your listings.</p>";
@@ -88,6 +101,74 @@ async function loadMessages() {
     }
 }
 
+function requestStatusPill(status) {
+    const kind = status === "accepted" ? "available" : status === "declined" || status === "cancelled" ? "rejected" : "pending";
+    return `<span class="pill pill-${kind}"><span class="pill-dot"></span>${escapeHtml(status)}</span>`;
+}
+
+async function loadIncomingRequests() {
+    const container = document.getElementById("incoming-requests-list");
+    try {
+        const { requests } = await apiFetch("requests/mine-incoming");
+        container.innerHTML = requests.length
+            ? requests.map((r) => `
+                <div class="card message-item">
+                    <div class="message-header">
+                        <a href="property-details.html?id=${r.propertyId?._id || ""}">${escapeHtml(r.propertyId?.title || "Listing removed")} &mdash; ${r.requestType === "rent" ? "Rent" : "Buy"} request</a>
+                        <span class="message-date">${new Date(r.createdAt).toLocaleDateString()}</span>
+                    </div>
+                    <p class="message-from">${escapeHtml(r.buyerId?.firstName || "")} ${escapeHtml(r.buyerId?.lastName || "")} &lt;${escapeHtml(r.buyerId?.email || "")}&gt;${r.buyerId?.phone ? ` &middot; ${escapeHtml(r.buyerId.phone)}` : ""}</p>
+                    <div style="margin-top:8px; display:flex; align-items:center; gap:8px">
+                        ${requestStatusPill(r.status)}
+                        ${r.status === "pending" ? `
+                            <button class="btn btn-primary btn-sm" data-accept-request="${r._id}">Accept</button>
+                            <button class="btn btn-danger btn-sm" data-decline-request="${r._id}">Decline</button>
+                        ` : ""}
+                    </div>
+                </div>
+            `).join("")
+            : "<p>No requests received yet.</p>";
+    } catch (error) {
+        container.innerHTML = "<p>Could not load requests.</p>";
+    }
+}
+
+async function loadOutgoingRequests() {
+    const container = document.getElementById("outgoing-requests-list");
+    try {
+        const { requests } = await apiFetch("requests/mine-outgoing");
+        container.innerHTML = requests.length
+            ? requests.map((r) => `
+                <div class="card message-item">
+                    <div class="message-header">
+                        <a href="property-details.html?id=${r.propertyId?._id || ""}">${escapeHtml(r.propertyId?.title || "Listing removed")} &mdash; ${r.requestType === "rent" ? "Rent" : "Buy"} request</a>
+                        <span class="message-date">${new Date(r.createdAt).toLocaleDateString()}</span>
+                    </div>
+                    <div style="margin-top:8px">${requestStatusPill(r.status)}</div>
+                </div>
+            `).join("")
+            : "<p>You haven't requested any properties yet.</p>";
+    } catch (error) {
+        container.innerHTML = "<p>Could not load your requests.</p>";
+    }
+}
+
+async function handleRequestsClick(event) {
+    const acceptBtn = event.target.closest("[data-accept-request]");
+    if (acceptBtn) {
+        if (!confirm("Accept this request? The property will be marked sold/rented and any other pending requests on it will be declined.")) return;
+        await apiFetch(`requests/${acceptBtn.dataset.acceptRequest}/accept`, { method: "PATCH" });
+        loadIncomingRequests();
+        loadMyListings();
+        return;
+    }
+    const declineBtn = event.target.closest("[data-decline-request]");
+    if (declineBtn) {
+        await apiFetch(`requests/${declineBtn.dataset.declineRequest}/decline`, { method: "PATCH" });
+        loadIncomingRequests();
+    }
+}
+
 async function handleGridClick(event) {
     const removeBtn = event.target.closest("[data-remove-favorite]");
     if (removeBtn) {
@@ -99,6 +180,15 @@ async function handleGridClick(event) {
     if (deleteBtn) {
         if (!confirm("Delete this listing?")) return;
         await apiFetch(`properties/${deleteBtn.dataset.deleteListing}`, { method: "DELETE" });
+        loadMyListings();
+        return;
+    }
+    const statusBtn = event.target.closest("[data-mark-status]");
+    if (statusBtn) {
+        await apiFetch(`properties/${statusBtn.dataset.markStatus}/status`, {
+            method: "PATCH",
+            body: { status: statusBtn.dataset.status },
+        });
         loadMyListings();
     }
 }
@@ -142,8 +232,9 @@ async function init() {
         btn.addEventListener("click", () => switchView(btn.dataset.view));
     });
     document.querySelectorAll(".listing-grid").forEach((grid) => grid.addEventListener("click", handleGridClick));
+    document.getElementById("incoming-requests-list").addEventListener("click", handleRequestsClick);
 
-    await Promise.all([loadSaved(), loadMyListings(), loadMessages()]);
+    await Promise.all([loadSaved(), loadMyListings(), loadMessages(), loadIncomingRequests(), loadOutgoingRequests()]);
     if (window.lucide) window.lucide.createIcons();
 }
 
