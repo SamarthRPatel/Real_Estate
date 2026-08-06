@@ -1,0 +1,5 @@
+.contactpage-wrap { padding: 40px 24px var(--space-2xl); display: flex; justify-content: center; }
+.contact-container { max-width: 560px; width: 100%; padding: 32px; text-align: left; }
+.contact-container .field, .contact-info { text-align: left; }
+.contact-info { margin-top: var(--space-lg); padding-top: var(--space-lg); border-top: 1px solid var(--border); font-size: 13px; }
+.map { border-radius: var(--radius); overflow: hidden; margin-top: var(--space-lg); }

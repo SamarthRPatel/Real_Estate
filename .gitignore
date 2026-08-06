@@ -1,0 +1,13 @@
+node_modules/
+.env
+.env.local
+
+# Editor / tool caches
+.vs/
+.claude/
+.gstack/
+server/.gstack/
+
+# OS junk
+Thumbs.db
+.DS_Store

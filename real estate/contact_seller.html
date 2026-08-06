@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Seller | DreamHome</title>
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="contact_seller.css">
+    <script type="module" src="contact_seller.js"></script>
+</head>
+<body>
+
+    <div class="centered-page">
+        <div class="card contact-container">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px">
+                <h2 style="margin:0">Contact Seller</h2>
+                <button class="btn btn-ghost btn-sm" onclick="window.history.back()">← Back</button>
+            </div>
+
+            <form id="contact-form">
+                <div class="field">
+                    <label for="property-name">Property</label>
+                    <input type="text" id="property-name" name="property-name" readonly>
+                </div>
+
+                <div class="field">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="field">
+                    <label for="email">Your Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="field">
+                    <label for="phone">Your Phone</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+
+                <div class="field">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="4" placeholder="Enter your message here..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

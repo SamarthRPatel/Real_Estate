@@ -1,0 +1,66 @@
+<!-- admin.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | DreamHome</title>
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+    <div class="app-shell">
+        <aside class="app-sidebar">
+            <div class="logo">DreamHome</div>
+            <button class="item active" data-view="pending">Pending Approvals</button>
+            <button class="item" data-view="properties">All Properties</button>
+            <button class="item" data-view="messages">Contact Messages</button>
+            <button class="item" data-view="users">Users</button>
+            <a href="report.html" class="item" style="text-decoration:none">Reports</a>
+            <button class="item" id="logout-btn" style="margin-top:auto">Logout</button>
+        </aside>
+
+        <main class="app-main">
+            <section data-view-panel="pending">
+                <h1>Pending Approvals</h1>
+                <div id="pending-listings">Loading...</div>
+            </section>
+
+            <section data-view-panel="properties" hidden>
+                <h1>All Properties</h1>
+                <div class="card" style="overflow-x:auto">
+                    <table class="admin-table" id="all-properties-table">
+                        <thead>
+                            <tr><th>Title</th><th>Type</th><th>Price</th><th>Status</th></tr>
+                        </thead>
+                        <tbody><tr><td colspan="4">Loading...</td></tr></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section data-view-panel="messages" hidden>
+                <h1>Contact Messages</h1>
+                <p>Submissions from the public Contact Us page.</p>
+                <div id="contact-messages-list">Loading...</div>
+            </section>
+
+            <section data-view-panel="users" hidden>
+                <h1>Users</h1>
+                <div class="card" style="overflow-x:auto">
+                    <table class="admin-table" id="users-table">
+                        <thead>
+                            <tr><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Joined</th><th></th></tr>
+                        </thead>
+                        <tbody><tr><td colspan="6">Loading...</td></tr></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script type="module" src="admin.js"></script>
+</body>
+
+</html>

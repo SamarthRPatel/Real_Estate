@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Your Property | DreamHome</title>
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="sell.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a class="logo" href="homepage.html">DreamHome</a>
+            <div class="nav-links">
+                <a href="homepage.html">Home</a>
+                <a href="buy.html">Buy</a>
+                <a href="rent.html">Rent</a>
+                <a href="sell.html">Sell</a>
+            </div>
+            <div class="nav-actions">
+                <a href="dashboard.html" class="btn btn-ghost btn-sm">Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <div class="container">
+            <h1>List Your Property</h1>
+            <p>Submit your listing for admin approval — it'll appear on Buy/Rent once approved.</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card sell-container">
+            <form id="sell-form">
+                <div class="field">
+                    <label for="property-title">Property Title</label>
+                    <input type="text" id="property-title" name="property-title" placeholder="Enter property title" required>
+                </div>
+
+                <div class="field">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" name="location" placeholder="Enter property location" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label for="price">Price ($)</label>
+                        <input type="number" id="price" name="price" placeholder="Enter price" required>
+                    </div>
+                    <div class="field">
+                        <label for="property-type">Property Type</label>
+                        <select id="property-type" name="property-type" required>
+                            <option value="apartment">Apartment</option>
+                            <option value="house">House</option>
+                            <option value="condo">Condo</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="listing-type">Listing Type</label>
+                        <select id="listing-type" name="listing-type" required>
+                            <option value="sale">For Sale</option>
+                            <option value="rent">For Rent</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label for="bedrooms">Bedrooms</label>
+                        <input type="number" id="bedrooms" name="bedrooms" min="0" placeholder="e.g. 3">
+                    </div>
+                    <div class="field">
+                        <label for="bathrooms">Bathrooms</label>
+                        <input type="number" id="bathrooms" name="bathrooms" min="0" placeholder="e.g. 2">
+                    </div>
+                    <div class="field">
+                        <label for="garage">Garage Spaces</label>
+                        <input type="number" id="garage" name="garage" min="0" placeholder="e.g. 1">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label for="area">Area (sqft)</label>
+                        <input type="number" id="area" name="area" min="0" placeholder="e.g. 1200">
+                    </div>
+                    <div class="field">
+                        <label for="year-built">Year Built</label>
+                        <input type="number" id="year-built" name="year-built" placeholder="e.g. 2015">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="amenities">Amenities</label>
+                    <input type="text" id="amenities" name="amenities" placeholder="Comma-separated, e.g. Pool, Gym, Balcony">
+                </div>
+
+                <div class="field">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" placeholder="Describe your property" required></textarea>
+                </div>
+
+                <div class="field">
+                    <label for="image">Upload Images (up to 6)</label>
+                    <input type="file" id="image" name="image" accept="image/*" multiple required>
+                    <div id="image-previews" class="image-previews"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Submit Listing</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { requireAuth } from "./auth-guard.js";
+        await requireAuth();
+    </script>
+    <script type="module" src="sell.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DreamHome | Find Your Dream Home</title>
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="homepage.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <div class="logo">DreamHome</div>
+            <div class="nav-links">
+                <a href="homepage.html">Home</a>
+                <a href="buy.html">Buy</a>
+                <a href="rent.html">Rent</a>
+                <a href="sell.html">Sell</a>
+                <a href="#about">About</a>
+                <a href="contactpage.html">Contact</a>
+            </div>
+            <div class="nav-actions" id="nav-actions">
+                <a href="login.html" class="btn btn-ghost btn-sm">Log In</a>
+                <a href="register.html" class="btn btn-primary btn-sm">Sign Up</a>
+            </div>
+            <button class="nav-toggle" aria-label="Menu">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Find Your Dream Home</h1>
+            <p class="sub">Buy, rent, or sell — thousands of listings, one search.</p>
+            <div class="search-tabs">
+                <a href="buy.html" class="active">Buy</a>
+                <a href="rent.html">Rent</a>
+                <a href="sell.html">Sell</a>
+            </div>
+            <form class="search-bar" onsubmit="event.preventDefault(); window.location.href='buy.html?search=' + encodeURIComponent(this.q.value)">
+                <i data-lucide="search"></i>
+                <input name="q" type="text" placeholder="Search by city, address, or ZIP code">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+    </header>
+
+    <section class="container featured">
+        <h2>Featured Properties</h2>
+        <p>A few of the newest listings on DreamHome.</p>
+        <div class="featured-grid" id="featured-grid">
+            <div class="skeleton" style="height:220px"></div>
+            <div class="skeleton" style="height:220px"></div>
+            <div class="skeleton" style="height:220px"></div>
+        </div>
+    </section>
+
+    <section class="container why-us">
+        <h2>Why Choose DreamHome</h2>
+        <div class="why-grid">
+            <div class="why-card"><i data-lucide="badge-check"></i><h3>Verified Listings</h3><p>Every listing is reviewed by our team before it goes live.</p></div>
+            <div class="why-card"><i data-lucide="shield-check"></i><h3>Trusted Sellers</h3><p>Sellers are registered accounts, not anonymous postings.</p></div>
+            <div class="why-card"><i data-lucide="tag"></i><h3>Transparent Pricing</h3><p>See the real price up front — no hidden fees.</p></div>
+            <div class="why-card"><i data-lucide="headphones"></i><h3>Real Support</h3><p>Contact a seller directly or reach our team any time.</p></div>
+        </div>
+    </section>
+
+    <section class="container" id="about">
+        <h2>About Us</h2>
+        <p class="about-text">We help you find the perfect home with ease. With thousands of listings and a straightforward buy/rent/sell flow, your next home is just a click away.</p>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div>
+                <div class="logo" style="font-family:var(--font-display);font-weight:700;color:var(--secondary)">DreamHome</div>
+                <p style="margin-top:8px">Montreal, QC</p>
+            </div>
+            <div>
+                <strong style="color:var(--text)">Quick Links</strong><br>
+                <a href="buy.html">Buy</a><br>
+                <a href="rent.html">Rent</a><br>
+                <a href="sell.html">Sell</a>
+            </div>
+            <div>
+                <strong style="color:var(--text)">Contact</strong><br>
+                <a href="contactpage.html">Contact Us</a><br>
+                sam@realestate.com<br>
+                +1 819-513-0853
+            </div>
+            <div>&copy; 2026 DreamHome. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { apiFetch, escapeHtml } from "./js/api.js";
+        import { initNavToggle, initIcons } from "./js/ui.js";
+
+        initNavToggle();
+        initIcons();
+
+        function priceLabel(property) {
+            const amount = Number(property.price).toLocaleString();
+            return property.listingType === "rent" ? `$${amount}/mo` : `$${amount}`;
+        }
+
+        async function loadFeatured() {
+            const grid = document.getElementById("featured-grid");
+            try {
+                const { properties } = await apiFetch("properties?listingType=sale&limit=3");
+                if (properties.length === 0) {
+                    grid.innerHTML = "<p>No listings yet — be the first to <a href='sell.html'>list a property</a>.</p>";
+                    return;
+                }
+                grid.innerHTML = properties.map((p) => `
+                    <a class="card card-hover featured-card" href="property-details.html?id=${p._id}">
+                        ${p.imageUrls?.[0] ? `<img src="${p.imageUrls[0]}" alt="${escapeHtml(p.title)}">` : `<div class="featured-card-noimg"></div>`}
+                        <div class="body">
+                            <div class="price">${priceLabel(p)}</div>
+                            <div class="title">${escapeHtml(p.title)}</div>
+                            <div class="loc">${escapeHtml(p.location)}</div>
+                        </div>
+                    </a>
+                `).join("");
+            } catch (error) {
+                grid.innerHTML = "<p>Could not load featured properties.</p>";
+            }
+        }
+
+        async function updateNavForAuth() {
+            try {
+                const { user } = await apiFetch("auth/me");
+                document.getElementById("nav-actions").innerHTML = `
+                    <a href="dashboard.html" class="btn btn-ghost btn-sm">Dashboard</a>
+                    <button class="btn btn-primary btn-sm" id="logout-btn">Logout</button>
+                `;
+                document.getElementById("logout-btn").addEventListener("click", async () => {
+                    await apiFetch("auth/logout", { method: "POST" });
+                    window.location.reload();
+                });
+            } catch (error) {
+                // not logged in — leave the default Log In / Sign Up buttons
+            }
+        }
+
+        loadFeatured();
+        updateNavForAuth();
+    </script>
+
+</body>
+</html>

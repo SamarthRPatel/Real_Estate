@@ -1,0 +1,22 @@
+.app-main h1 { margin-bottom: 4px; }
+.app-main h2 { margin-top: var(--space-xl); }
+
+.listing-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-top: 12px; }
+.listing-item { overflow: hidden; }
+.listing-item img, .listing-item .property-noimg { height: 130px; width: 100%; object-fit: cover; }
+.property-noimg { background: linear-gradient(135deg, #DCE9FF, #EAF3FF); }
+.listing-item .body { padding: 14px; }
+.listing-item .price { font-weight: 700; font-size: 15px; }
+.listing-item .title { display: block; font-size: 13px; color: var(--text); margin-top: 2px; font-weight: 600; }
+.listing-item .loc { font-size: 12px; color: var(--text-muted); }
+.listing-actions { display: flex; gap: 6px; margin-top: 10px; }
+
+.message-item { padding: 16px 18px; margin-bottom: 12px; }
+.message-header { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 6px; }
+.message-header a { font-weight: 600; }
+.message-date { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+.message-from { font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
+
+@media (max-width: 600px) {
+    .app-main { padding: 20px; }
+}

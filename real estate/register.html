@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | DreamHome</title>
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="register.css">
+    <script type="module" src="register.js"></script>
+</head>
+<body>
+
+    <div class="auth-split">
+        <div class="auth-illustration">
+            <a href="homepage.html" class="auth-logo">DreamHome</a>
+            <h2>Buy, rent, or sell — start here.</h2>
+            <p>Create an account to save favorites, list a property, or manage your listings.</p>
+        </div>
+
+        <div class="auth-form-side">
+            <div class="auth-card">
+                <h2>Create an Account</h2>
+                <form onsubmit="registerUser(event)">
+                    <div class="field">
+                        <label for="first_name">First Name</label>
+                        <input type="text" id="first_name" name="first_name" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" id="last_name" name="last_name" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="password">Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="password" name="password" required>
+                            <span class="toggle-password" onclick="togglePassword('password')">👁</span>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="confirm-password">Confirm Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="confirm-password" name="confirm-password" required>
+                            <span class="toggle-password" onclick="togglePassword('confirm-password')">👁</span>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="phone">Phone Number</label>
+                        <input type="text" id="phone" name="phone" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+                </form>
+                <p class="auth-alt">Already have an account? <a href="login.html">Login here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword(fieldId) {
+            var passwordInput = document.getElementById(fieldId);
+            passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+        }
+    </script>
+
+</body>
+</html>

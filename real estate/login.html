@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | DreamHome</title>
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="login.css">
+    <script type="module" src="login.js"></script>
+</head>
+<body>
+
+    <div class="auth-split">
+        <div class="auth-illustration">
+            <a href="homepage.html" class="auth-logo">DreamHome</a>
+            <h2>Welcome back.</h2>
+            <p>Log in to manage your listings, saved properties, and account.</p>
+        </div>
+
+        <div class="auth-form-side">
+            <div class="auth-card">
+                <h2>Login to Your Account</h2>
+                <form id="loginForm">
+                    <div class="field">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="password">Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                            <span class="toggle-password" onclick="togglePassword()">👁</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    <p id="error-message" class="error-message"></p>
+                </form>
+
+                <p class="auth-alt">Don't have an account? <a href="register.html">Sign up</a></p>
+                <p class="auth-alt"><a href="forgotpassword.html">Forgot Password?</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword() {
+            const passwordField = document.getElementById("password");
+            passwordField.type = passwordField.type === "password" ? "text" : "password";
+        }
+    </script>
+
+</body>
+</html>

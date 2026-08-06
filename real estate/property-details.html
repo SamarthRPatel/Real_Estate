@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Details | DreamHome</title>
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="property-details.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a class="logo" href="homepage.html">DreamHome</a>
+            <div class="nav-links">
+                <a href="homepage.html">Home</a>
+                <a href="buy.html">Buy</a>
+                <a href="rent.html">Rent</a>
+                <a href="sell.html">Sell</a>
+            </div>
+            <div class="nav-actions">
+                <a href="dashboard.html" class="btn btn-ghost btn-sm">Dashboard</a>
+            </div>
+            <button class="nav-toggle" aria-label="Menu"><i data-lucide="menu"></i></button>
+        </div>
+    </nav>
+
+    <div class="container" id="page-content">
+        <div class="skeleton" style="height:400px; margin:24px 0"></div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container"><div>&copy; 2026 DreamHome. All rights reserved.</div></div>
+    </footer>
+
+    <script type="module" src="property-details.js"></script>
+    <script type="module">
+        import { initNavToggle, initIcons } from "./js/ui.js";
+        initNavToggle();
+    </script>
+</body>
+</html>

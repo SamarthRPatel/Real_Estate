@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35222.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F6C74AB4-3881-49E2-867D-47C5AC1C8798}"
+	ProjectSection(SolutionItems) = preProject
+		Admi.html = Admi.html
+		admin.css = admin.css
+		Authentication Check & Logout.js = Authentication Check & Logout.js
+		buy.css = buy.css
+		buy.html = buy.html
+		buy.js = buy.js
+		calculator.css = calculator.css
+		calculator.html = calculator.html
+		chat.css = chat.css
+		chat.html = chat.html
+		contactpage.css = contactpage.css
+		contactpage.html = contactpage.html
+		contact_seller.css = contact_seller.css
+		contact_seller.html = contact_seller.html
+		contact_seller.js = contact_seller.js
+		dashboard.css = dashboard.css
+		dashboard.html = dashboard.html
+		forgotpassword.css = forgotpassword.css
+		forgotpassword.html = forgotpassword.html
+		homepage.css = homepage.css
+		homepage.html = homepage.html
+		inquiry.css = inquiry.css
+		inquiry.html = inquiry.html
+		inquiry2.css = inquiry2.css
+		inquiry2.html = inquiry2.html
+		inquiry3.css = inquiry3.css
+		inquiry3.html = inquiry3.html
+		login.css = login.css
+		login.html = login.html
+		RE.css = RE.css
+		RE.html = RE.html
+		realestate_database.sql = realestate_database.sql
+		real_estate_database.sql = real_estate_database.sql
+		register.css = register.css
+		register.html = register.html
+		rent.css = rent.css
+		rent.html = rent.html
+		report.css = report.css
+		report.html = report.html
+		saved_properties.js = saved_properties.js
+		sell.css = sell.css
+		sell.html = sell.html
+		sell.js = sell.js
+		subscription.js = subscription.js
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EC2227B9-CD7B-484F-BB10-4C524B486647}
+	EndGlobalSection
+EndGlobal

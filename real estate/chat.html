@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with Seller</title>
+    <link rel="stylesheet" href="chat.css">
+</head>
+<body>
+
+    <div class="chat-container">
+        <h2>Chat with Seller</h2>
+        <div id="chat-box"></div>
+        <input type="text" id="message" placeholder="Type your message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        let buyerId = 1;  // Change this dynamically based on logged-in user
+        let sellerId = 2; // Change based on selected property seller
+
+        function fetchMessages() {
+            fetch(`fetch_messages.php?buyer_id=${buyerId}&seller_id=${sellerId}`)
+                .then(response => response.json())
+                .then(data => {
+                    let chatBox = document.getElementById("chat-box");
+                    chatBox.innerHTML = "";
+                    data.forEach(msg => {
+                        chatBox.innerHTML += `<p><strong>${msg.sender}:</strong> ${msg.message}</p>`;
+                    });
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                });
+        }
+
+        function sendMessage() {
+            let message = document.getElementById("message").value;
+            if (message.trim() === "") return;
+
+            fetch("send_message.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `buyer_id=${buyerId}&seller_id=${sellerId}&message=${message}`
+            }).then(() => {
+                document.getElementById("message").value = "";
+                fetchMessages();
+            });
+        }
+
+        setInterval(fetchMessages, 3000); // Auto-refresh chat every 3 sec
+        fetchMessages(); // Load initial messages
+    </script>
+
+</body>
+</html>

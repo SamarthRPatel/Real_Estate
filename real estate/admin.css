@@ -1,0 +1,9 @@
+.admin-pending-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin-top: 12px; }
+.admin-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.admin-table th { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text-muted); font-weight: 600; }
+.admin-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+
+.message-item { padding: 16px 18px; margin-bottom: 12px; }
+.message-header { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 6px; }
+.message-date { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+.message-from { font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
