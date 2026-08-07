@@ -4,6 +4,9 @@
   "private": true,
   "description": "Express + MongoDB backend for the real estate buy/sell/rent app",
   "main": "server.js",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"
