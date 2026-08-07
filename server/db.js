@@ -9,12 +9,19 @@ if (dns.getServers().every((server) => server === "127.0.0.1" || server === "::1
 }
 
 async function connectDB() {
-  const uri = process.env.MONGODB_URI;
-  if (!uri) {
-    throw new Error("MONGODB_URI is not set. Copy .env.example to .env and fill it in.");
+  try {
+    const uri = process.env.MONGODB_URI;
+
+    console.log("Connecting to MongoDB...");
+
+    await mongoose.connect(uri);
+
+    console.log("✅ Connected to MongoDB");
+  } catch (err) {
+    console.error("MongoDB Connection Error:");
+    console.error(err);
+    process.exit(1);
   }
-  await mongoose.connect(uri);
-  console.log("Connected to MongoDB");
 }
 
 module.exports = connectDB;
