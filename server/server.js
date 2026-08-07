@@ -14,7 +14,7 @@ const contactRoutes = require("./routes/contact");
 const requestRoutes = require("./routes/requests");
 
 const app = express();
-const FRONTEND_DIR = path.join(__dirname, "..", "real estate");
+const FRONTEND_DIR = path.join(__dirname, "..", "real-estate");
 
 app.use(express.json({ limit: "20mb" }));
 app.use(cookieParser());
