@@ -28,9 +28,26 @@
             <section data-view-panel="overview">
                 <h1>Dashboard</h1>
                 <div class="stat-row">
-                    <div class="stat-card"><div class="num" id="stat-saved">—</div><div class="lbl">Saved properties</div></div>
-                    <div class="stat-card"><div class="num" id="stat-listings">—</div><div class="lbl">My listings</div></div>
-                    <div class="stat-card"><div class="num" id="stat-pending">—</div><div class="lbl">Pending approval</div></div>
+                    <div class="stat-card stat-rose">
+                        <div class="stat-icon"><i data-lucide="heart"></i></div>
+                        <div class="num" id="stat-saved">—</div>
+                        <div class="lbl">Saved properties</div>
+                    </div>
+                    <div class="stat-card stat-blue">
+                        <div class="stat-icon"><i data-lucide="home"></i></div>
+                        <div class="num" id="stat-listings">—</div>
+                        <div class="lbl">My listings</div>
+                    </div>
+                    <div class="stat-card stat-amber">
+                        <div class="stat-icon"><i data-lucide="clock"></i></div>
+                        <div class="num" id="stat-pending">—</div>
+                        <div class="lbl">Pending approval</div>
+                    </div>
+                    <div class="stat-card stat-violet">
+                        <div class="stat-icon"><i data-lucide="handshake"></i></div>
+                        <div class="num" id="stat-requests">—</div>
+                        <div class="lbl">Pending requests</div>
+                    </div>
                 </div>
                 <h2>My Recent Listings</h2>
                 <div class="listing-grid" id="overview-listings"><p>Loading...</p></div>
@@ -69,27 +86,46 @@
 
             <section data-view-panel="profile" hidden>
                 <h1>Profile</h1>
-                <div class="card" style="max-width:420px; padding:24px">
-                    <form id="profile-form">
-                        <div class="field">
-                            <label for="profile-first-name">First Name</label>
-                            <input type="text" id="profile-first-name" required>
+                <p>Manage your personal information and account details.</p>
+
+                <div class="profile-layout">
+                    <div class="card profile-summary-card">
+                        <div class="profile-avatar" id="profile-avatar">--</div>
+                        <h3 id="profile-display-name">&nbsp;</h3>
+                        <p class="profile-email-display" id="profile-email-display"></p>
+                        <span class="pill pill-available" id="profile-role-pill">user</span>
+                        <div class="profile-meta">
+                            <div><i data-lucide="calendar"></i> Member since <span id="profile-joined">—</span></div>
+                            <div><i data-lucide="phone"></i> <span id="profile-phone-display">No phone on file</span></div>
                         </div>
-                        <div class="field">
-                            <label for="profile-last-name">Last Name</label>
-                            <input type="text" id="profile-last-name" required>
-                        </div>
-                        <div class="field">
-                            <label for="profile-phone">Phone</label>
-                            <input type="text" id="profile-phone">
-                        </div>
-                        <div class="field">
-                            <label>Email</label>
-                            <input type="text" id="profile-email" disabled>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                        <p id="profile-status" style="margin-top:10px"></p>
-                    </form>
+                    </div>
+
+                    <div class="card profile-form-card">
+                        <h3 style="margin-bottom:16px">Edit Profile</h3>
+                        <form id="profile-form">
+                            <div class="profile-form-row">
+                                <div class="field">
+                                    <label for="profile-first-name">First Name</label>
+                                    <input type="text" id="profile-first-name" required>
+                                </div>
+                                <div class="field">
+                                    <label for="profile-last-name">Last Name</label>
+                                    <input type="text" id="profile-last-name" required>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="profile-phone">Phone</label>
+                                <input type="text" id="profile-phone" placeholder="Add a phone number">
+                            </div>
+                            <div class="field">
+                                <label>Email</label>
+                                <input type="text" id="profile-email" disabled>
+                                <p class="field-hint">Your email can't be changed here.</p>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <p id="profile-status" style="margin-top:10px"></p>
+                        </form>
+                    </div>
                 </div>
             </section>
         </main>

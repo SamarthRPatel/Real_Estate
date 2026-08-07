@@ -220,6 +220,27 @@ button { font-family: var(--font-body); cursor: pointer; }
 .stat-card .lbl { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
 .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; }
 
+/* Colored stat card variants — semantic accents (not the brand accent), used to
+   make a row of dashboard KPIs scannable at a glance rather than uniformly gray. */
+.stat-icon {
+  width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+  margin-bottom: 10px; background: var(--stat-bg, transparent); color: var(--stat-color, var(--primary));
+}
+.stat-icon i { width: 20px; height: 20px; }
+
+.stat-rose, .stat-blue, .stat-amber, .stat-violet, .stat-emerald, .stat-teal {
+  border-top: 3px solid var(--stat-color); border-radius: var(--radius);
+}
+.stat-rose    { --stat-bg: rgba(225,29,72,0.1);  --stat-color: #E11D48; }
+.stat-blue    { --stat-bg: rgba(0,106,255,0.1);  --stat-color: #006AFF; }
+.stat-amber   { --stat-bg: rgba(245,158,11,0.12); --stat-color: #B45309; }
+.stat-violet  { --stat-bg: rgba(124,58,237,0.1); --stat-color: #7C3AED; }
+.stat-emerald { --stat-bg: rgba(16,185,129,0.12); --stat-color: #059669; }
+.stat-teal    { --stat-bg: rgba(20,184,166,0.12); --stat-color: #0D9488; }
+
+.stat-rose .num, .stat-blue .num, .stat-amber .num, .stat-violet .num,
+.stat-emerald .num, .stat-teal .num { color: var(--stat-color); }
+
 /* ---------- Skeleton loading ---------- */
 .skeleton {
   background: linear-gradient(90deg, var(--border) 25%, #f0f3f7 37%, var(--border) 63%);

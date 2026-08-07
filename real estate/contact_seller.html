@@ -6,6 +6,7 @@
     <title>Contact Seller | DreamHome</title>
     <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="contact_seller.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script type="module" src="contact_seller.js"></script>
 </head>
 <body>
@@ -14,7 +15,7 @@
         <div class="card contact-container">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px">
                 <h2 style="margin:0">Contact Seller</h2>
-                <button class="btn btn-ghost btn-sm" onclick="window.history.back()">← Back</button>
+                <button class="btn btn-ghost btn-sm" onclick="window.history.back()"><i data-lucide="arrow-left"></i> Back</button>
             </div>
 
             <form id="contact-form">
@@ -47,6 +48,10 @@
             </form>
         </div>
     </div>
+
+    <script>
+        if (window.lucide) lucide.createIcons();
+    </script>
 
 </body>
 </html>

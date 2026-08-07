@@ -1,1 +1,24 @@
 /* Page-specific overrides for report.html — shared app-shell/table styles come from design-system.css and admin.css */
+
+.chart-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+    margin-top: var(--space-lg);
+    align-items: stretch;
+}
+.chart-card {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.chart-card h3 { margin-bottom: 16px; }
+.chart-wide { grid-column: 1 / -1; }
+
+.chart-canvas-wrap { position: relative; height: 220px; }
+.chart-canvas-wide { height: 240px; }
+
+@media (max-width: 900px) {
+    .chart-grid { grid-template-columns: 1fr; }
+    .chart-wide { grid-column: auto; }
+}

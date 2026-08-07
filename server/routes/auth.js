@@ -8,19 +8,30 @@ const { sendPasswordResetEmail } = require("../utils/mailer");
 
 const router = express.Router();
 const COOKIE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
+const REMEMBER_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
 
-function setSessionCookie(res, user) {
+function setSessionCookie(res, user, remember) {
+  // remember === undefined (register) keeps the default 7d cookie.
+  // remember === true (login, checked) extends the cookie to 30d.
+  // remember === false (login, unchecked) makes it a true session cookie
+  // (no maxAge — cleared when the browser closes), with a short-lived JWT
+  // underneath as a backstop.
+  const expiresIn = remember === false ? "1d" : remember ? "30d" : "7d";
+
   const token = jwt.sign(
     { id: user._id, role: user.role },
     process.env.JWT_SECRET,
-    { expiresIn: "7d" }
+    { expiresIn }
   );
-  res.cookie("token", token, {
+  const cookieOptions = {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
-    maxAge: COOKIE_MAX_AGE_MS,
-  });
+  };
+  if (remember !== false) {
+    cookieOptions.maxAge = remember ? REMEMBER_MAX_AGE_MS : COOKIE_MAX_AGE_MS;
+  }
+  res.cookie("token", token, cookieOptions);
 }
 
 function publicUser(user) {
@@ -31,6 +42,7 @@ function publicUser(user) {
     email: user.email,
     phone: user.phone,
     role: user.role,
+    createdAt: user.createdAt,
   };
 }
 
@@ -71,7 +83,7 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, remember } = req.body;
     if (!email || !password) {
       return res.status(400).json({ error: "Email and password are required" });
     }
@@ -86,7 +98,7 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ error: "Invalid email or password" });
     }
 
-    setSessionCookie(res, user);
+    setSessionCookie(res, user, Boolean(remember));
     res.json({ user: publicUser(user) });
   } catch (err) {
     res.status(500).json({ error: "Login failed" });

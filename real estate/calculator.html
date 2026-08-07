@@ -6,6 +6,7 @@
     <title>Mortgage Calculator | DreamHome</title>
     <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="calculator.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
@@ -13,7 +14,7 @@
         <div class="card calculator-container">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px">
                 <h2 style="margin:0">Mortgage Calculator</h2>
-                <button class="btn btn-ghost btn-sm" onclick="window.history.back()">← Back</button>
+                <button class="btn btn-ghost btn-sm" onclick="window.history.back()"><i data-lucide="arrow-left"></i> Back</button>
             </div>
 
             <div class="field">
@@ -56,6 +57,8 @@
         const params = new URLSearchParams(window.location.search);
         const price = params.get("price");
         if (price) document.getElementById("loanAmount").value = price;
+
+        if (window.lucide) lucide.createIcons();
     </script>
 </body>
 </html>

@@ -1,37 +1,295 @@
 /* Shared split-panel layout for login/register */
-body { margin: 0; }
+body { margin: 0; overflow-x: hidden; }
 
 .auth-split { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
 
 .auth-illustration {
+    position: relative;
+    overflow: hidden;
     color: #fff;
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: 60px;
     background:
-        linear-gradient(180deg, rgba(15,23,42,0.6), rgba(15,23,42,0.85)),
+        linear-gradient(180deg, rgba(15,23,42,0.6), rgba(15,23,42,0.88)),
         linear-gradient(135deg, #3A4A63, #1B2740 60%, #0F172A);
+    background-size: 100% 100%, 220% 220%;
+    animation: auth-bg-drift 18s ease-in-out infinite;
+}
+
+/* Soft floating accent orbs behind the copy — decorative, low-opacity, blurred */
+.auth-illustration::before,
+.auth-illustration::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+    z-index: 0;
+}
+.auth-illustration::before {
+    width: 340px; height: 340px;
+    background: radial-gradient(circle, rgba(0,106,255,0.45), transparent 70%);
+    top: -80px; right: -80px;
+    animation: auth-orb-float 12s ease-in-out infinite;
+}
+.auth-illustration::after {
+    width: 260px; height: 260px;
+    background: radial-gradient(circle, rgba(124,58,237,0.4), transparent 70%);
+    bottom: -60px; left: -60px;
+    animation: auth-orb-float 14s ease-in-out infinite reverse;
+}
+
+.auth-illustration > * { position: relative; z-index: 1; }
+
+.auth-illustration .auth-eyebrow {
+    font-family: var(--font-body); font-weight: 600; font-size: 12px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #7FB2FF; margin-bottom: 14px;
+    opacity: 0; animation: auth-fade-up 0.7s ease forwards;
 }
 .auth-illustration .auth-logo {
     font-family: var(--font-display); font-weight: 700; font-size: 20px; color: #fff;
-    margin-bottom: 40px; display: inline-block; width: fit-content;
+    margin-bottom: 40px; display: inline-block; width: fit-content; text-decoration: none;
+    opacity: 0; animation: auth-fade-up 0.7s ease forwards;
 }
-.auth-illustration h2 { color: #fff; font-size: 32px; max-width: 20ch; }
-.auth-illustration p { color: rgba(255,255,255,0.8); max-width: 36ch; }
+.auth-illustration h2 {
+    color: #fff; font-size: 34px; max-width: 20ch; line-height: 1.2;
+    opacity: 0; animation: auth-fade-up 0.7s ease 0.1s forwards;
+}
+.auth-illustration p {
+    color: rgba(255,255,255,0.8); max-width: 36ch;
+    opacity: 0; animation: auth-fade-up 0.7s ease 0.2s forwards;
+}
 
 .auth-form-side { display: flex; align-items: center; justify-content: center; padding: 40px 24px; }
-.auth-card { width: 100%; max-width: 380px; }
+.auth-card {
+    width: 100%; max-width: 380px;
+    opacity: 0; animation: auth-fade-up 0.6s ease 0.15s forwards;
+}
 .auth-card h2 { margin-bottom: 24px; }
 .auth-alt { font-size: 13px; text-align: center; margin-top: 12px; }
+.auth-alt a { position: relative; }
+.auth-alt a::after {
+    content: ""; position: absolute; left: 0; bottom: -2px; width: 100%; height: 1px;
+    background: currentColor; transform: scaleX(0); transform-origin: right;
+    transition: transform 200ms ease;
+}
+.auth-alt a:hover::after { transform: scaleX(1); transform-origin: left; }
+
+.field input:focus {
+    box-shadow: 0 0 0 4px rgba(0,106,255,0.12);
+    transition: box-shadow 150ms ease, border-color 150ms ease;
+}
 
 .password-wrapper { position: relative; }
 .password-wrapper input { padding-right: 40px; }
-.toggle-password { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 15px; }
+.toggle-password {
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 15px;
+    transition: transform 150ms ease;
+}
+.toggle-password:hover { transform: translateY(-50%) scale(1.15); }
 
 .error-message { color: var(--danger); font-size: 13px; margin-top: 10px; text-align: center; }
+.error-message:not(:empty) { animation: auth-fade-up 0.3s ease; }
+
+@keyframes auth-fade-up {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes auth-orb-float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-20px, 24px) scale(1.08); }
+}
+@keyframes auth-bg-drift {
+    0%, 100% { background-position: 0% 0%, 0% 0%; }
+    50% { background-position: 0% 0%, 100% 100%; }
+}
 
 @media (max-width: 860px) {
     .auth-split { grid-template-columns: 1fr; }
     .auth-illustration { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .auth-illustration, .auth-illustration::before, .auth-illustration::after,
+    .auth-eyebrow, .auth-logo, .auth-illustration h2, .auth-illustration p, .auth-card {
+        animation: none !important; opacity: 1 !important;
+    }
+}
+
+/* ---------- Shared auth form chrome (back link, titles, icon fields) ---------- */
+.auth-back {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 600; color: var(--text-muted);
+    margin-bottom: 28px;
+}
+.auth-back:hover { color: var(--primary); }
+.auth-back i { width: 16px; height: 16px; }
+
+.auth-title { margin-bottom: 4px; }
+.auth-subtitle { font-size: 14px; margin-bottom: 24px; }
+.auth-subtitle strong { color: var(--text); }
+
+.field-icon { position: relative; }
+.field-icon .field-glyph {
+    position: absolute; left: 14px; bottom: 14px;
+    width: 16px; height: 16px; color: var(--text-muted); pointer-events: none;
+}
+.field-icon input { padding-left: 40px; }
+
+.password-wrapper .toggle-password {
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-muted);
+}
+.password-wrapper .toggle-password i { width: 16px; height: 16px; }
+.password-wrapper .toggle-password:hover { color: var(--primary); transform: translateY(-50%); }
+
+.auth-row {
+    display: flex; align-items: center; justify-content: space-between;
+    margin: -4px 0 20px; font-size: 13px;
+}
+.auth-remember { display: flex; align-items: center; gap: 8px; color: var(--text-muted); cursor: pointer; }
+.auth-remember input { width: 15px; height: 15px; accent-color: var(--primary); cursor: pointer; }
+.auth-forgot { font-weight: 600; }
+
+.btn-primary i { width: 16px; height: 16px; }
+
+/* ---------- Animated city scene (auth illustration panel) ---------- */
+.auth-illustration.auth-scene {
+    justify-content: flex-start;
+    padding: 56px 48px 0;
+    background: linear-gradient(180deg, #2E63E0 0%, #4C86F0 38%, #9AC4FF 75%, #DCECFF 100%);
+    animation: none;
+}
+.auth-illustration.auth-scene::before,
+.auth-illustration.auth-scene::after { display: none; }
+
+.auth-scene-copy { position: relative; z-index: 2; max-width: 80%; }
+.auth-scene-copy h2 { max-width: none; }
+.auth-highlight {
+    position: relative;
+    text-decoration: underline;
+    text-decoration-color: rgba(255,255,255,0.55);
+    text-decoration-thickness: 3px;
+    text-underline-offset: 6px;
+}
+
+.scene { position: absolute; inset: 0; z-index: 1; overflow: hidden; }
+
+/* Sun */
+.scene-sun {
+    position: absolute; top: 40px; right: 60px;
+    width: 90px; height: 90px; border-radius: 50%;
+    background: radial-gradient(circle, #FFF6D8 0%, rgba(255,246,216,0.5) 45%, rgba(255,246,216,0) 72%);
+    box-shadow: 0 0 60px 20px rgba(255,246,216,0.35);
+    animation: sun-pulse 6s ease-in-out infinite;
+}
+@keyframes sun-pulse {
+    0%, 100% { opacity: 0.85; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.06); }
+}
+
+/* Clouds */
+.cloud {
+    position: absolute; background: rgba(255,255,255,0.85); border-radius: 999px;
+    filter: blur(0.5px);
+}
+.cloud::before, .cloud::after {
+    content: ""; position: absolute; background: rgba(255,255,255,0.85); border-radius: 50%;
+}
+.cloud-1 { width: 70px; height: 22px; top: 90px; left: -80px; animation: drift 26s linear infinite; }
+.cloud-1::before { width: 34px; height: 34px; top: -16px; left: 8px; }
+.cloud-1::after { width: 26px; height: 26px; top: -10px; left: 34px; }
+.cloud-2 { width: 50px; height: 16px; top: 150px; left: -60px; animation: drift 34s linear infinite 6s; }
+.cloud-2::before { width: 24px; height: 24px; top: -11px; left: 6px; }
+.cloud-2::after { width: 18px; height: 18px; top: -7px; left: 24px; }
+.cloud-3 { width: 60px; height: 18px; top: 50px; left: -70px; animation: drift 30s linear infinite 14s; }
+.cloud-3::before { width: 28px; height: 28px; top: -13px; left: 8px; }
+.cloud-3::after { width: 20px; height: 20px; top: -8px; left: 30px; }
+@keyframes drift { from { transform: translateX(0); } to { transform: translateX(160%); } }
+
+/* Birds */
+.bird {
+    position: absolute; color: rgba(255,255,255,0.9); font-weight: 700; font-size: 14px;
+    transform: scaleX(1.6);
+}
+.bird-1 { top: 70px; left: -20px; animation: fly 14s linear infinite; }
+.bird-2 { top: 100px; left: -20px; animation: fly 14s linear infinite 2.4s; }
+.bird-3 { top: 82px; left: -20px; animation: fly 14s linear infinite 4.8s; }
+@keyframes fly {
+    0% { transform: translate(0, 0) scaleX(1.6); }
+    50% { transform: translate(130%, -18px) scaleX(1.6); }
+    100% { transform: translate(280%, 0) scaleX(1.6); }
+}
+
+/* Ground: skyline + trees + road, pinned to the bottom of the panel */
+.scene-ground { position: absolute; left: 0; right: 0; bottom: 0; height: 55%; }
+
+.skyline { position: absolute; left: 0; right: 0; top: 0; bottom: 34px; display: flex; align-items: flex-end; gap: 3%; padding: 0 4%; }
+.building {
+    flex: 1; border-radius: 4px 4px 0 0;
+    background:
+        repeating-linear-gradient(180deg, rgba(255,255,255,0.35) 0 6px, transparent 6px 14px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.35) 0 6px, transparent 6px 14px),
+        linear-gradient(180deg, #2A4A85, #1D355F);
+    transform: translateY(100%);
+    animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.b1 { height: 46%; animation-delay: 0.05s; }
+.b2 { height: 72%; animation-delay: 0.15s; }
+.b3 { height: 58%; animation-delay: 0.25s; }
+.b4 { height: 92%; animation-delay: 0.35s; }
+.b5 { height: 64%; animation-delay: 0.45s; }
+.b6 { height: 80%; animation-delay: 0.55s; }
+.b7 { height: 50%; animation-delay: 0.65s; }
+@keyframes rise {
+    to { transform: translateY(0); }
+}
+
+.tree { position: absolute; bottom: 30px; }
+.tree-1 { left: 6%; } .tree-2 { left: 32%; } .tree-3 { right: 8%; }
+.tree-canopy {
+    display: block; width: 26px; height: 26px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #5FD07A, #2E9E52);
+    transform-origin: bottom center; animation: sway 4.5s ease-in-out infinite;
+}
+.tree-trunk { display: block; width: 4px; height: 12px; background: #6B4A2F; margin: 0 auto; }
+.tree-2 .tree-canopy { animation-delay: 1s; }
+.tree-3 .tree-canopy { animation-delay: 2s; }
+@keyframes sway {
+    0%, 100% { transform: rotate(-4deg); }
+    50% { transform: rotate(4deg); }
+}
+
+.road { position: absolute; left: 0; right: 0; bottom: 0; height: 34px; background: #35405A; overflow: hidden; }
+.road-line {
+    position: absolute; top: 50%; left: 0; width: 200%; height: 3px; transform: translateY(-50%);
+    background: repeating-linear-gradient(90deg, #F2C94C 0 22px, transparent 22px 44px);
+    animation: road-scroll 2.2s linear infinite;
+}
+@keyframes road-scroll { to { transform: translate(-50%, -50%); } }
+
+.car {
+    position: absolute; bottom: 7px; width: 30px; height: 12px; border-radius: 5px;
+    background: #EAF4FF; box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+}
+.car::after {
+    content: ""; position: absolute; top: -5px; left: 6px; width: 14px; height: 6px;
+    border-radius: 3px 3px 0 0; background: inherit;
+}
+.car-1 { left: -40px; background: #6FA8FF; animation: drive 6s linear infinite; }
+.car-2 { left: -40px; bottom: 9px; transform: scale(0.85); background: #FFFFFF; animation: drive 8s linear infinite 1.5s; }
+.car-3 { left: -40px; bottom: 5px; background: #4C86F0; animation: drive 7s linear infinite 3.5s; }
+@keyframes drive { from { left: -40px; } to { left: 110%; } }
+
+@media (max-width: 1080px) {
+    .auth-scene-copy h2 { font-size: 28px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .scene-sun, .cloud, .bird, .building, .tree-canopy, .road-line, .car {
+        animation: none !important;
+    }
+    .building { transform: translateY(0); }
 }

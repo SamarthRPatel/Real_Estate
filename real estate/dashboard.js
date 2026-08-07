@@ -110,6 +110,7 @@ async function loadIncomingRequests() {
     const container = document.getElementById("incoming-requests-list");
     try {
         const { requests } = await apiFetch("requests/mine-incoming");
+        document.getElementById("stat-requests").textContent = requests.filter(r => r.status === "pending").length;
         container.innerHTML = requests.length
             ? requests.map((r) => `
                 <div class="card message-item">
@@ -193,7 +194,20 @@ async function handleGridClick(event) {
     }
 }
 
+function renderProfileSummary(user) {
+    const initials = `${user.firstName?.[0] || ""}${user.lastName?.[0] || ""}`;
+    document.getElementById("profile-avatar").textContent = initials || "?";
+    document.getElementById("profile-display-name").textContent = `${user.firstName} ${user.lastName}`;
+    document.getElementById("profile-email-display").textContent = user.email;
+    document.getElementById("profile-role-pill").textContent = user.role;
+    document.getElementById("profile-phone-display").textContent = user.phone || "No phone on file";
+    document.getElementById("profile-joined").textContent = user.createdAt
+        ? new Date(user.createdAt).toLocaleDateString(undefined, { year: "numeric", month: "long" })
+        : "—";
+}
+
 function setupProfileForm(user) {
+    renderProfileSummary(user);
     document.getElementById("profile-first-name").value = user.firstName;
     document.getElementById("profile-last-name").value = user.lastName;
     document.getElementById("profile-phone").value = user.phone || "";
@@ -203,7 +217,7 @@ function setupProfileForm(user) {
         event.preventDefault();
         const status = document.getElementById("profile-status");
         try {
-            await apiFetch("auth/me", {
+            const { user: updatedUser } = await apiFetch("auth/me", {
                 method: "PATCH",
                 body: {
                     firstName: document.getElementById("profile-first-name").value,
@@ -211,6 +225,7 @@ function setupProfileForm(user) {
                     phone: document.getElementById("profile-phone").value,
                 },
             });
+            renderProfileSummary(updatedUser);
             status.textContent = "Saved!";
             status.style.color = "var(--accent)";
         } catch (error) {

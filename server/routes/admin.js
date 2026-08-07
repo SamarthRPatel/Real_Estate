@@ -2,6 +2,8 @@ const express = require("express");
 const Property = require("../models/Property");
 const User = require("../models/User");
 const ContactMessage = require("../models/ContactMessage");
+const Inquiry = require("../models/Inquiry");
+const PropertyRequest = require("../models/PropertyRequest");
 const requireAuth = require("../middleware/requireAuth");
 const requireRole = require("../middleware/requireRole");
 
@@ -58,12 +60,29 @@ router.delete("/users/:id", async (req, res) => {
 });
 
 router.get("/reports", async (req, res) => {
-  const [totalSold, properties, users] = await Promise.all([
-    Property.countDocuments({ status: { $in: ["sold", "rented"] } }),
+  const [
+    totalUsers,
+    adminCount,
+    properties,
+    users,
+    totalInquiries,
+    requestCounts,
+  ] = await Promise.all([
+    User.countDocuments(),
+    User.countDocuments({ role: "admin" }),
     Property.find().sort({ createdAt: -1 }),
     User.find().select("createdAt"),
+    Inquiry.countDocuments(),
+    Promise.all([
+      PropertyRequest.countDocuments({ status: "pending" }),
+      PropertyRequest.countDocuments({ status: "accepted" }),
+      PropertyRequest.countDocuments({ status: "declined" }),
+    ]),
   ]);
 
+  const [requestsPending, requestsAccepted, requestsDeclined] = requestCounts;
+
+  // Signups over time, for the line chart.
   const signupsByDay = {};
   for (const user of users) {
     const day = user.createdAt.toISOString().slice(0, 10);
@@ -73,15 +92,45 @@ router.get("/reports", async (req, res) => {
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([login_date, total_users]) => ({ login_date, total_users }));
 
+  // Breakdowns computed once from the same property list — small dataset,
+  // no need for separate aggregation queries.
+  const statusBreakdown = { pending: 0, available: 0, sold: 0, rented: 0, rejected: 0 };
+  const listingTypeBreakdown = { sale: 0, rent: 0 };
+  const propertyTypeBreakdown = { apartment: 0, house: 0, condo: 0 };
+
+  for (const p of properties) {
+    if (p.status in statusBreakdown) statusBreakdown[p.status]++;
+    if (p.listingType in listingTypeBreakdown) listingTypeBreakdown[p.listingType]++;
+    if (p.propertyType in propertyTypeBreakdown) propertyTypeBreakdown[p.propertyType]++;
+  }
+
   res.json({
-    total_sold: totalSold,
+    totals: {
+      users: totalUsers,
+      admins: adminCount,
+      listings: properties.length,
+      sold: statusBreakdown.sold,
+      rented: statusBreakdown.rented,
+      available: statusBreakdown.available,
+      pendingApproval: statusBreakdown.pending,
+      inquiries: totalInquiries,
+      requestsPending,
+      requestsAccepted,
+      requestsDeclined,
+    },
+    statusBreakdown,
+    listingTypeBreakdown,
+    propertyTypeBreakdown,
+    user_activity: userActivity,
+    // Kept for backward compatibility with the existing sales table.
+    total_sold: statusBreakdown.sold + statusBreakdown.rented,
     properties: properties.map((p) => ({
       title: p.title,
       price: p.price,
+      status: p.status,
       sold: p.status === "sold" || p.status === "rented",
       sold_date: p.status === "sold" || p.status === "rented" ? p.createdAt : null,
     })),
-    user_activity: userActivity,
   });
 });
 

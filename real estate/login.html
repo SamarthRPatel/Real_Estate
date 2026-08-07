@@ -7,49 +7,118 @@
     <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="css/auth.css">
     <link rel="stylesheet" href="login.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script type="module" src="login.js"></script>
 </head>
 <body>
 
     <div class="auth-split">
-        <div class="auth-illustration">
-            <a href="homepage.html" class="auth-logo">DreamHome</a>
-            <h2>Welcome back.</h2>
-            <p>Log in to manage your listings, saved properties, and account.</p>
-        </div>
-
         <div class="auth-form-side">
             <div class="auth-card">
-                <h2>Login to Your Account</h2>
+                <a href="homepage.html" class="auth-back"><i data-lucide="arrow-left"></i> Back</a>
+
+                <h2 class="auth-title">Welcome Back</h2>
+                <p class="auth-subtitle">Sign in to continue your journey with <strong>DreamHome</strong>.</p>
+
                 <form id="loginForm">
-                    <div class="field">
+                    <div class="field field-icon">
                         <label for="email">Email</label>
+                        <i data-lucide="mail" class="field-glyph"></i>
                         <input type="email" id="email" name="email" placeholder="Enter your email" required>
                     </div>
 
-                    <div class="field">
+                    <div class="field field-icon">
                         <label for="password">Password</label>
+                        <i data-lucide="lock" class="field-glyph"></i>
                         <div class="password-wrapper">
                             <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                            <span class="toggle-password" onclick="togglePassword()">👁</span>
+                            <span class="toggle-password" id="togglePassword" role="button" tabindex="0" aria-label="Show password">
+                                <i data-lucide="eye"></i>
+                            </span>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    <div class="auth-row">
+                        <label class="auth-remember">
+                            <input type="checkbox" id="remember" name="remember">
+                            Remember me
+                        </label>
+                        <a href="forgotpassword.html" class="auth-forgot">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">
+                        Sign In <i data-lucide="arrow-right"></i>
+                    </button>
                     <p id="error-message" class="error-message"></p>
                 </form>
 
                 <p class="auth-alt">Don't have an account? <a href="register.html">Sign up</a></p>
-                <p class="auth-alt"><a href="forgotpassword.html">Forgot Password?</a></p>
+            </div>
+        </div>
+
+        <div class="auth-illustration auth-scene">
+            <div class="auth-scene-copy">
+                <span class="auth-eyebrow">Sign in</span>
+                <a href="homepage.html" class="auth-logo">DreamHome</a>
+                <h2>Find your <span class="auth-highlight">dream home</span></h2>
+                <p>Discover the best properties around you.</p>
+            </div>
+
+            <div class="scene" aria-hidden="true">
+                <div class="scene-sun"></div>
+
+                <div class="cloud cloud-1"></div>
+                <div class="cloud cloud-2"></div>
+                <div class="cloud cloud-3"></div>
+
+                <span class="bird bird-1">^</span>
+                <span class="bird bird-2">^</span>
+                <span class="bird bird-3">^</span>
+
+                <div class="scene-ground">
+                    <div class="skyline">
+                        <div class="building b1"></div>
+                        <div class="building b2"></div>
+                        <div class="building b3"></div>
+                        <div class="building b4"></div>
+                        <div class="building b5"></div>
+                        <div class="building b6"></div>
+                        <div class="building b7"></div>
+                    </div>
+
+                    <div class="tree tree-1"><span class="tree-canopy"></span><span class="tree-trunk"></span></div>
+                    <div class="tree tree-2"><span class="tree-canopy"></span><span class="tree-trunk"></span></div>
+                    <div class="tree tree-3"><span class="tree-canopy"></span><span class="tree-trunk"></span></div>
+
+                    <div class="road">
+                        <div class="road-line"></div>
+                        <div class="car car-1"></div>
+                        <div class="car car-2"></div>
+                        <div class="car car-3"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
+        const passwordField = document.getElementById("password");
+        const toggle = document.getElementById("togglePassword");
+
         function togglePassword() {
-            const passwordField = document.getElementById("password");
-            passwordField.type = passwordField.type === "password" ? "text" : "password";
+            const isHidden = passwordField.type === "password";
+            passwordField.type = isHidden ? "text" : "password";
+            toggle.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+            toggle.innerHTML = `<i data-lucide="${isHidden ? "eye-off" : "eye"}"></i>`;
+            if (window.lucide) lucide.createIcons();
         }
+
+        toggle.addEventListener("click", togglePassword);
+        toggle.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") { e.preventDefault(); togglePassword(); }
+        });
+
+        if (window.lucide) lucide.createIcons();
     </script>
 
 </body>
