@@ -2,7 +2,7 @@ services:
   - type: web
     name: real-estate-api
     runtime: node
-    rootDir: server
+    rootDir: backend
     plan: free
 
     buildCommand: npm install
@@ -26,6 +26,6 @@ services:
 
   - type: static
     name: dreamhome-frontend
-    rootDir: real-estate
+    rootDir: frontend
     buildCommand: ""
     staticPublishPath: .

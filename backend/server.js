@@ -15,7 +15,7 @@ const contactRoutes = require("./routes/contact");
 const requestRoutes = require("./routes/requests");
 
 const app = express();
-const FRONTEND_DIR = path.join(__dirname, "..", "real-estate");
+const FRONTEND_DIR = path.join(__dirname, "..", "frontend");
 
 // The frontend is a separate Render service (different origin) from this
 // API, so cross-origin requests need explicit CORS + credentials support.

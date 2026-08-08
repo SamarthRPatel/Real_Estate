@@ -6,7 +6,7 @@ node_modules/
 .vs/
 .claude/
 .gstack/
-server/.gstack/
+backend/.gstack/
 
 # OS junk
 Thumbs.db
