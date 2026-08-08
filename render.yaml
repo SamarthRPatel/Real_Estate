@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: dreamhome
+    name: real-estate-api
     runtime: node
     rootDir: server
     plan: free
@@ -15,9 +15,17 @@ services:
         generateValue: true
       - key: MONGODB_URI
         sync: false
+      # Frontend's own URL — used both as the CORS-allowed origin and to
+      # build links in emails (password reset, inquiry notifications).
       - key: APP_URL
         sync: false
       - key: EMAIL_USER
         sync: false
       - key: EMAIL_APP_PASSWORD
         sync: false
+
+  - type: static
+    name: dreamhome-frontend
+    rootDir: real-estate
+    buildCommand: ""
+    staticPublishPath: .
