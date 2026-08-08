@@ -1,6 +1,7 @@
 require("dotenv").config();
 const path = require("path");
 const express = require("express");
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const connectDB = require("./db");
 
@@ -16,6 +17,11 @@ const requestRoutes = require("./routes/requests");
 const app = express();
 const FRONTEND_DIR = path.join(__dirname, "..", "real-estate");
 
+// The frontend is a separate Render service (different origin) from this
+// API, so cross-origin requests need explicit CORS + credentials support.
+// APP_URL already points at the frontend (it's used to build links in
+// emails), so it doubles as the allowed origin here.
+app.use(cors({ origin: process.env.APP_URL || "http://localhost:3000", credentials: true }));
 app.use(express.json({ limit: "20mb" }));
 app.use(cookieParser());
 

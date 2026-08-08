@@ -23,10 +23,16 @@ function setSessionCookie(res, user, remember) {
     process.env.JWT_SECRET,
     { expiresIn }
   );
+  const isProd = process.env.NODE_ENV === "production";
   const cookieOptions = {
     httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    // Frontend and API are deployed as separate Render services (different
+    // origins), so the cookie has to be sent cross-site. That requires
+    // SameSite=None, which browsers only honor when Secure is also set —
+    // hence tying both to production. Locally, frontend+API share an
+    // origin and run over http, so Lax + non-secure is correct there.
+    sameSite: isProd ? "none" : "lax",
+    secure: isProd,
   };
   if (remember !== false) {
     cookieOptions.maxAge = remember ? REMEMBER_MAX_AGE_MS : COOKIE_MAX_AGE_MS;
