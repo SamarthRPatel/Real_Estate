@@ -17,10 +17,7 @@ const requestRoutes = require("./routes/requests");
 const app = express();
 const FRONTEND_DIR = path.join(__dirname, "..", "frontend");
 
-// The frontend is a separate Render service (different origin) from this
-// API, so cross-origin requests need explicit CORS + credentials support.
-// APP_URL already points at the frontend (it's used to build links in
-// emails), so it doubles as the allowed origin here.
+
 app.use(cors({ origin: process.env.APP_URL || "http://localhost:3000", credentials: true }));
 app.use(express.json({ limit: "20mb" }));
 app.use(cookieParser());
