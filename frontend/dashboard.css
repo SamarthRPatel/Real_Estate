@@ -1,10 +1,10 @@
-.app-main h1 { margin-bottom: 4px; }
+.app-main h1 { margin-bottom: 4px; font-size: 36px; }
 .app-main h2 { margin-top: var(--space-xl); }
 
 .listing-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-top: 12px; }
 .listing-item { overflow: hidden; }
 .listing-item img, .listing-item .property-noimg { height: 130px; width: 100%; object-fit: cover; }
-.property-noimg { background: linear-gradient(135deg, #DCE9FF, #EAF3FF); }
+.property-noimg { background: linear-gradient(135deg, #F0E4D0, #FAF3E7); }
 .listing-item .body { padding: 14px; }
 .listing-item .price { font-weight: 700; font-size: 15px; }
 .listing-item .title { display: block; font-size: 13px; color: var(--text); margin-top: 2px; font-weight: 600; }
@@ -22,7 +22,7 @@
 .profile-summary-card { padding: 28px 24px; text-align: center; }
 .profile-avatar {
     width: 84px; height: 84px; border-radius: 50%; margin: 0 auto 16px;
-    background: linear-gradient(135deg, var(--primary), #3B8CFF);
+    background: linear-gradient(135deg, var(--primary), #DDA85C);
     color: #fff; display: flex; align-items: center; justify-content: center;
     font-family: var(--font-display); font-weight: 700; font-size: 28px;
     text-transform: uppercase;
@@ -34,7 +34,7 @@
     padding-top: 16px; display: flex; flex-direction: column; gap: 10px;
 }
 .profile-meta div { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-muted); }
-.profile-meta i { width: 16px; height: 16px; color: var(--primary); flex-shrink: 0; }
+.profile-meta svg { width: 16px; height: 16px; color: var(--primary); flex-shrink: 0; }
 
 .profile-form-card { padding: 28px; }
 .profile-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }

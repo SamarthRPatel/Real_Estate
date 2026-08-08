@@ -14,23 +14,23 @@
 - **Reference research:** Zillow/Redfin/Compass category norms — full-bleed hero with prominent search, tab-style Buy/Rent/Sell switcher, filter rail + photo-first card grid, mobile-first. Compass in particular leans near-monochrome + photography; this system deliberately uses a blue/green SaaS-style palette instead, reading as "modern proptech" rather than "luxury brokerage" — a deliberate departure, not an oversight.
 
 ## Typography
-- **Display/Hero:** Poppins, weight 700 — geometric, confident at large sizes.
-- **Headings (H2/H3):** Poppins, weight 600.
-- **Body/UI/Labels:** Inter, weights 400 (body), 500 (UI labels), 600 (emphasis, tabular data).
-- **Data/Prices:** Inter with `font-variant-numeric: tabular-nums`.
-- **Loading:** Self-hosted — fetch Google Fonts' woff2 files (Poppins 600/700, Inter variable 400-600) and inline as `@font-face` `data:` URIs, or self-host the files under a `/fonts` static path. Do not rely on a live Google Fonts `<link>` at runtime.
-- **Scale:** Hero/display 34-40px · H2 22-24px · H3 16-18px · body 15-16px · UI label/caption 12-13px.
+- **Script/Identity:** Alex Brush, weight 400 — used for `h1` on every page (the "first moment" headline: hero, page-header, panel title) and the brand wordmark (`.logo`, `.auth-logo`, `.auth-logo-static`) everywhere it appears. Never used for body copy, labels, buttons, or nav links — a cursive script is illegible at UI sizes, so it's deliberately concentrated on large, singular moments rather than applied broadly.
+- **Headings (H2/H3/H4):** Poppins, weight 700 — carries the "confident, bold" identity everywhere script would hurt legibility (card titles, section sub-headings, dense admin/dashboard panels).
+- **Body/UI/Labels:** Manrope, weights 400 (body), 500-600 (UI labels/emphasis), up to 800 available for stat numbers.
+- **Data/Prices:** Manrope with `font-variant-numeric: tabular-nums`.
+- **Loading:** Self-hosted — fetch Google Fonts' woff2 files (Alex Brush 400, Poppins 600/700, Manrope variable 400-800) and self-host under `/fonts`. Do not rely on a live Google Fonts `<link>` at runtime.
+- **Scale:** h1 (script) 38-64px · H2 22-30px · H3 19px · H4 16px · body 15-16px · UI label/caption 12-13px.
 
 ## Color
-- **Approach:** Restrained — one primary action color, one dark UI surface, green reserved strictly for semantic "success/available" state.
-- **Primary:** `#006AFF` — buttons, links, focus rings, primary CTAs.
-- **Secondary:** `#0F172A` — dashboard sidebar, admin nav, any "dark UI" surface.
-- **Background:** `#F8FAFC` — page canvas.
+- **Approach:** Warm luxury — gold/terracotta primary against a deep warm charcoal, green reserved strictly for semantic "success/available" state. Replaces the earlier blue/white proptech palette by explicit request (2026-08-08).
+- **Primary:** `#B8863B` (amber-gold) — buttons, links, focus rings, primary CTAs. Hover/ink: `#96692A`.
+- **Secondary:** `#221B15` (deep warm charcoal) — dashboard sidebar, admin nav, any "dark UI" surface, auth illustration panels.
+- **Background:** `#FBF7F1` (warm cream) — page canvas.
 - **Surface/Cards:** `#FFFFFF` — cards, inputs, modals.
-- **Accent:** `#22C55E` — success/available status only, never decorative.
-- **Text:** `#1F2937` primary text, `#5B6472` muted text.
-- **Semantic (separate from accent):** warning `#F59E0B` (pending), danger `#EF4444` (errors/rejected), reuse accent green for "available/approved".
-- **Borders:** `#E4E9F0`.
+- **Accent:** `#3F7D4E` (forest green) — success/available status only, never decorative.
+- **Text:** `#2B241E` primary text, `#8A7A6B` muted text.
+- **Semantic (separate from accent):** warning `#C2410C` (burnt orange, pending), danger `#A8291F` (deep brick red, errors/rejected), reuse accent green for "available/approved". Chosen to stay hue-distinct from the gold primary despite the overall warm palette.
+- **Borders:** `#E8DFD1`.
 - **Dark mode:** Not implemented for the product itself (out of scope for this pass) — the product is light-mode-first per the approved design.
 
 ## Spacing
@@ -43,10 +43,10 @@
 - **Grid:** Listing/property cards: 3 columns desktop, 2 tablet, 1 mobile.
 - **Max content width:** ~1080-1200px for content sections.
 - **Border radius:** sm 8px (inputs, small controls) · md/default 14px (cards, buttons use pill/999px) · lg 18px (hero panels, modals).
-- **Shadows:** Soft resting shadow `0 4px 16px rgba(15,23,42,.06), 0 1px 3px rgba(15,23,42,.08)`; lifted/hover shadow `0 12px 28px rgba(15,23,42,.12), 0 2px 6px rgba(15,23,42,.08)`.
+- **Shadows:** Soft resting shadow `0 4px 16px rgba(43,36,30,.07), 0 1px 3px rgba(43,36,30,.09)`; lifted/hover shadow `0 16px 32px rgba(43,36,30,.16), 0 4px 10px rgba(43,36,30,.10)`.
 
 ## Motion
-- **Approach:** Intentional, not expressive — hover lift on cards/buttons (translateY(-1px) + shadow), smooth transitions (~120ms), sticky navbar, skeleton loading states while data fetches. No heavy scroll-driven choreography — this should read as professional, not gimmicky.
+- **Approach:** Noticeably lively (updated 2026-08-08, was "intentional, not expressive") — buttons and cards use a spring easing (`cubic-bezier(0.34, 1.56, 0.64, 1)`) with a visible lift + scale on hover, a shine-sweep across buttons, nav links get an animated underline, sidebar items nudge sideways, stat-card icons pop and rotate. Still no scroll-driven choreography — the energy lives in hover/interaction feedback, not ambient motion.
 - **Respect `prefers-reduced-motion`.**
 
 ## Components (shared library to build)
@@ -61,3 +61,4 @@ Lucide icons (via CDN script or inline SVG), replacing the emoji currently used 
 | 2026-08-05 | Initial design system created | User supplied a fully-specified brief (colors, fonts, page inventory) inspired by Zillow but distinct. Created by `/design-consultation`; light competitive research on Zillow/Redfin/Compass confirmed structural alignment with the category and validated the blue/green palette as a deliberate, positive departure from the category leader's monochrome-photo look. |
 | 2026-08-05 | Scope: restyle + build core pages | User chose to restyle all existing working pages and add a real property-details page and a proper user dashboard (saved/my-listings/profile), using only data already in MongoDB — no social login, messaging, or external maps/places APIs. |
 | 2026-08-05 | Inter + Poppins kept despite being common defaults | User explicitly named both fonts. Applied a small internal contrast by giving them distinct roles (Poppins display-only, Inter everything else) rather than treating them as interchangeable. |
+| 2026-08-08 | Full re-skin: Alex Brush + Poppins Bold + Manrope, warm luxury palette, lively motion | User requested a new font combination (replacing Inter with Manrope, adding Alex Brush), a new color direction (moved off blue/white to warm gold/terracotta + deep charcoal after picking from 3 proposed directions), and more expressive hover/animation throughout. Alex Brush was scoped to `h1` + brand wordmark only, not body/UI text, after flagging that cursive script hurts legibility at small sizes — user accepted that compromise. |

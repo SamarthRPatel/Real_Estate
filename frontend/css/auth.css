@@ -12,8 +12,8 @@ body { margin: 0; overflow-x: hidden; }
     justify-content: center;
     padding: 60px;
     background:
-        linear-gradient(180deg, rgba(15,23,42,0.6), rgba(15,23,42,0.88)),
-        linear-gradient(135deg, #3A4A63, #1B2740 60%, #0F172A);
+        linear-gradient(180deg, rgba(34,27,21,0.6), rgba(34,27,21,0.88)),
+        linear-gradient(135deg, #4A3826, #2C2015 60%, #1A130D);
     background-size: 100% 100%, 220% 220%;
     animation: auth-bg-drift 18s ease-in-out infinite;
 }
@@ -30,13 +30,13 @@ body { margin: 0; overflow-x: hidden; }
 }
 .auth-illustration::before {
     width: 340px; height: 340px;
-    background: radial-gradient(circle, rgba(0,106,255,0.45), transparent 70%);
+    background: radial-gradient(circle, rgba(184,134,59,0.5), transparent 70%);
     top: -80px; right: -80px;
     animation: auth-orb-float 12s ease-in-out infinite;
 }
 .auth-illustration::after {
     width: 260px; height: 260px;
-    background: radial-gradient(circle, rgba(124,58,237,0.4), transparent 70%);
+    background: radial-gradient(circle, rgba(139,58,58,0.4), transparent 70%);
     bottom: -60px; left: -60px;
     animation: auth-orb-float 14s ease-in-out infinite reverse;
 }
@@ -44,28 +44,32 @@ body { margin: 0; overflow-x: hidden; }
 .auth-illustration > * { position: relative; z-index: 1; }
 
 .auth-illustration .auth-eyebrow {
+    display: block;
     font-family: var(--font-body); font-weight: 600; font-size: 12px; letter-spacing: 0.14em;
-    text-transform: uppercase; color: #7FB2FF; margin-bottom: 14px;
-    opacity: 0; animation: auth-fade-up 0.7s ease forwards;
+    text-transform: uppercase; color: #E0B87A; margin-bottom: 14px;
+    opacity: 0; animation: auth-fade-up 0.7s var(--ease-spring) forwards;
 }
 .auth-illustration .auth-logo {
-    font-family: var(--font-display); font-weight: 700; font-size: 20px; color: #fff;
+    font-family: var(--font-script); font-weight: 400; font-size: 34px; color: #fff;
     margin-bottom: 40px; display: inline-block; width: fit-content; text-decoration: none;
-    opacity: 0; animation: auth-fade-up 0.7s ease forwards;
+    opacity: 0; animation: auth-fade-up 0.7s var(--ease-spring) forwards;
+    transition: transform 220ms var(--ease-spring), color 150ms ease;
 }
+.auth-illustration .auth-logo:hover { transform: rotate(-2deg) scale(1.05); color: #E0B87A; }
 .auth-illustration h2 {
-    color: #fff; font-size: 34px; max-width: 20ch; line-height: 1.2;
-    opacity: 0; animation: auth-fade-up 0.7s ease 0.1s forwards;
+    font-family: var(--font-script); font-weight: 400;
+    color: #fff; font-size: 48px; max-width: 20ch; line-height: 1.15;
+    opacity: 0; animation: auth-fade-up 0.7s var(--ease-spring) 0.1s forwards;
 }
 .auth-illustration p {
     color: rgba(255,255,255,0.8); max-width: 36ch;
-    opacity: 0; animation: auth-fade-up 0.7s ease 0.2s forwards;
+    opacity: 0; animation: auth-fade-up 0.7s var(--ease-spring) 0.2s forwards;
 }
 
 .auth-form-side { display: flex; align-items: center; justify-content: center; padding: 40px 24px; }
 .auth-card {
     width: 100%; max-width: 380px;
-    opacity: 0; animation: auth-fade-up 0.6s ease 0.15s forwards;
+    opacity: 0; animation: auth-fade-up 0.6s var(--ease-spring) 0.15s forwards;
 }
 .auth-card h2 { margin-bottom: 24px; }
 .auth-alt { font-size: 13px; text-align: center; margin-top: 12px; }
@@ -78,7 +82,7 @@ body { margin: 0; overflow-x: hidden; }
 .auth-alt a:hover::after { transform: scaleX(1); transform-origin: left; }
 
 .field input:focus {
-    box-shadow: 0 0 0 4px rgba(0,106,255,0.12);
+    box-shadow: 0 0 0 4px rgba(184,134,59,0.16);
     transition: box-shadow 150ms ease, border-color 150ms ease;
 }
 
@@ -86,16 +90,16 @@ body { margin: 0; overflow-x: hidden; }
 .password-wrapper input { padding-right: 40px; }
 .toggle-password {
     position: absolute; right: 14px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 15px;
-    transition: transform 150ms ease;
+    transition: transform 220ms var(--ease-spring);
 }
-.toggle-password:hover { transform: translateY(-50%) scale(1.15); }
+.toggle-password:hover { transform: translateY(-50%) scale(1.2); }
 
 .error-message { color: var(--danger); font-size: 13px; margin-top: 10px; text-align: center; }
 .error-message:not(:empty) { animation: auth-fade-up 0.3s ease; }
 
 @keyframes auth-fade-up {
-    from { opacity: 0; transform: translateY(14px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(22px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 @keyframes auth-orb-float {
     0%, 100% { transform: translate(0, 0) scale(1); }
@@ -123,9 +127,10 @@ body { margin: 0; overflow-x: hidden; }
     display: inline-flex; align-items: center; gap: 6px;
     font-size: 13px; font-weight: 600; color: var(--text-muted);
     margin-bottom: 28px;
+    transition: transform 220ms var(--ease-spring), color 150ms ease;
 }
-.auth-back:hover { color: var(--primary); }
-.auth-back i { width: 16px; height: 16px; }
+.auth-back:hover { color: var(--primary); transform: translateX(-3px); }
+.auth-back svg { width: 16px; height: 16px; }
 
 .auth-title { margin-bottom: 4px; }
 .auth-subtitle { font-size: 14px; margin-bottom: 24px; }
@@ -142,8 +147,8 @@ body { margin: 0; overflow-x: hidden; }
     display: flex; align-items: center; justify-content: center;
     color: var(--text-muted);
 }
-.password-wrapper .toggle-password i { width: 16px; height: 16px; }
-.password-wrapper .toggle-password:hover { color: var(--primary); transform: translateY(-50%); }
+.password-wrapper .toggle-password svg { width: 16px; height: 16px; }
+.password-wrapper .toggle-password:hover { color: var(--primary); }
 
 .auth-row {
     display: flex; align-items: center; justify-content: space-between;
@@ -153,13 +158,13 @@ body { margin: 0; overflow-x: hidden; }
 .auth-remember input { width: 15px; height: 15px; accent-color: var(--primary); cursor: pointer; }
 .auth-forgot { font-weight: 600; }
 
-.btn-primary i { width: 16px; height: 16px; }
+.btn-primary svg { width: 16px; height: 16px; }
 
-/* ---------- Animated city scene (auth illustration panel) ---------- */
+/* ---------- Animated dusk skyline (auth illustration panel) ---------- */
 .auth-illustration.auth-scene {
     justify-content: flex-start;
     padding: 56px 48px 0;
-    background: linear-gradient(180deg, #2E63E0 0%, #4C86F0 38%, #9AC4FF 75%, #DCECFF 100%);
+    background: linear-gradient(180deg, #7A4A1E 0%, #C1793B 38%, #E8B067 75%, #F6DDB4 100%);
     animation: none;
 }
 .auth-illustration.auth-scene::before,
@@ -170,7 +175,7 @@ body { margin: 0; overflow-x: hidden; }
 .auth-highlight {
     position: relative;
     text-decoration: underline;
-    text-decoration-color: rgba(255,255,255,0.55);
+    text-decoration-color: rgba(255,255,255,0.6);
     text-decoration-thickness: 3px;
     text-underline-offset: 6px;
 }
@@ -181,22 +186,22 @@ body { margin: 0; overflow-x: hidden; }
 .scene-sun {
     position: absolute; top: 40px; right: 60px;
     width: 90px; height: 90px; border-radius: 50%;
-    background: radial-gradient(circle, #FFF6D8 0%, rgba(255,246,216,0.5) 45%, rgba(255,246,216,0) 72%);
-    box-shadow: 0 0 60px 20px rgba(255,246,216,0.35);
+    background: radial-gradient(circle, #FFEFC9 0%, rgba(255,239,201,0.55) 45%, rgba(255,239,201,0) 72%);
+    box-shadow: 0 0 70px 24px rgba(255,239,201,0.4);
     animation: sun-pulse 6s ease-in-out infinite;
 }
 @keyframes sun-pulse {
     0%, 100% { opacity: 0.85; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.06); }
+    50% { opacity: 1; transform: scale(1.08); }
 }
 
 /* Clouds */
 .cloud {
-    position: absolute; background: rgba(255,255,255,0.85); border-radius: 999px;
+    position: absolute; background: rgba(255,246,232,0.85); border-radius: 999px;
     filter: blur(0.5px);
 }
 .cloud::before, .cloud::after {
-    content: ""; position: absolute; background: rgba(255,255,255,0.85); border-radius: 50%;
+    content: ""; position: absolute; background: rgba(255,246,232,0.85); border-radius: 50%;
 }
 .cloud-1 { width: 70px; height: 22px; top: 90px; left: -80px; animation: drift 26s linear infinite; }
 .cloud-1::before { width: 34px; height: 34px; top: -16px; left: 8px; }
@@ -211,7 +216,7 @@ body { margin: 0; overflow-x: hidden; }
 
 /* Birds */
 .bird {
-    position: absolute; color: rgba(255,255,255,0.9); font-weight: 700; font-size: 14px;
+    position: absolute; color: rgba(255,246,232,0.9); font-weight: 700; font-size: 14px;
     transform: scaleX(1.6);
 }
 .bird-1 { top: 70px; left: -20px; animation: fly 14s linear infinite; }
@@ -230,9 +235,9 @@ body { margin: 0; overflow-x: hidden; }
 .building {
     flex: 1; border-radius: 4px 4px 0 0;
     background:
-        repeating-linear-gradient(180deg, rgba(255,255,255,0.35) 0 6px, transparent 6px 14px),
-        repeating-linear-gradient(90deg, rgba(255,255,255,0.35) 0 6px, transparent 6px 14px),
-        linear-gradient(180deg, #2A4A85, #1D355F);
+        repeating-linear-gradient(180deg, rgba(255,224,178,0.25) 0 6px, transparent 6px 14px),
+        repeating-linear-gradient(90deg, rgba(255,224,178,0.25) 0 6px, transparent 6px 14px),
+        linear-gradient(180deg, #4A2E1A, #2A1A0E);
     transform: translateY(100%);
     animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
@@ -251,10 +256,10 @@ body { margin: 0; overflow-x: hidden; }
 .tree-1 { left: 6%; } .tree-2 { left: 32%; } .tree-3 { right: 8%; }
 .tree-canopy {
     display: block; width: 26px; height: 26px; border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #5FD07A, #2E9E52);
+    background: radial-gradient(circle at 35% 30%, #6E9B4F, #3F6B2E);
     transform-origin: bottom center; animation: sway 4.5s ease-in-out infinite;
 }
-.tree-trunk { display: block; width: 4px; height: 12px; background: #6B4A2F; margin: 0 auto; }
+.tree-trunk { display: block; width: 4px; height: 12px; background: #4A2E1A; margin: 0 auto; }
 .tree-2 .tree-canopy { animation-delay: 1s; }
 .tree-3 .tree-canopy { animation-delay: 2s; }
 @keyframes sway {
@@ -262,7 +267,7 @@ body { margin: 0; overflow-x: hidden; }
     50% { transform: rotate(4deg); }
 }
 
-.road { position: absolute; left: 0; right: 0; bottom: 0; height: 34px; background: #35405A; overflow: hidden; }
+.road { position: absolute; left: 0; right: 0; bottom: 0; height: 34px; background: #2B2119; overflow: hidden; }
 .road-line {
     position: absolute; top: 50%; left: 0; width: 200%; height: 3px; transform: translateY(-50%);
     background: repeating-linear-gradient(90deg, #F2C94C 0 22px, transparent 22px 44px);
@@ -272,19 +277,19 @@ body { margin: 0; overflow-x: hidden; }
 
 .car {
     position: absolute; bottom: 7px; width: 30px; height: 12px; border-radius: 5px;
-    background: #EAF4FF; box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    background: #FCEEDA; box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 .car::after {
     content: ""; position: absolute; top: -5px; left: 6px; width: 14px; height: 6px;
     border-radius: 3px 3px 0 0; background: inherit;
 }
-.car-1 { left: -40px; background: #6FA8FF; animation: drive 6s linear infinite; }
-.car-2 { left: -40px; bottom: 9px; transform: scale(0.85); background: #FFFFFF; animation: drive 8s linear infinite 1.5s; }
-.car-3 { left: -40px; bottom: 5px; background: #4C86F0; animation: drive 7s linear infinite 3.5s; }
+.car-1 { left: -40px; background: #C1793B; animation: drive 6s linear infinite; }
+.car-2 { left: -40px; bottom: 9px; transform: scale(0.85); background: #FCEEDA; animation: drive 8s linear infinite 1.5s; }
+.car-3 { left: -40px; bottom: 5px; background: #8B5E2E; animation: drive 7s linear infinite 3.5s; }
 @keyframes drive { from { left: -40px; } to { left: 110%; } }
 
 @media (max-width: 1080px) {
-    .auth-scene-copy h2 { font-size: 28px; }
+    .auth-scene-copy h2 { font-size: 38px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

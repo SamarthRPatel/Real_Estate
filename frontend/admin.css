@@ -1,3 +1,5 @@
+.app-main h1 { margin-bottom: 4px; font-size: 36px; }
+
 .admin-pending-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin-top: 12px; }
 .admin-table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .admin-table th { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text-muted); font-weight: 600; }
