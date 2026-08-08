@@ -1,7 +1,10 @@
-// Points at the backend's own URL, since frontend and backend are
-// deployed as separate services with no shared origin. Update this
-// after deploying the backend — its Render dashboard shows the URL.
-const API_BASE = "https://REPLACE-WITH-YOUR-BACKEND-URL.onrender.com";
+// Empty string = relative "/api/..." calls, which resolve correctly
+// whenever frontend and backend share an origin (local dev via
+// `npm start` in backend/, or any single-service deployment).
+// Split hosting (separate frontend/backend Render services) needs an
+// explicit absolute URL here instead — set it after deploying the
+// backend, using its Render dashboard URL.
+const API_BASE = "";
 
 export async function apiFetch(path, { method = "GET", body } = {}) {
   let res;
