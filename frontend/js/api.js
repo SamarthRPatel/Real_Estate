@@ -1,4 +1,7 @@
-const API_BASE = "https://real-estate-api-gp1u.onrender.com";
+// Points at the backend's own URL, since frontend and backend are
+// deployed as separate services with no shared origin. Update this
+// after deploying the backend — its Render dashboard shows the URL.
+const API_BASE = "https://REPLACE-WITH-YOUR-BACKEND-URL.onrender.com";
 
 export async function apiFetch(path, { method = "GET", body } = {}) {
   let res;

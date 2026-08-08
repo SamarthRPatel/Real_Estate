@@ -11,7 +11,7 @@ export async function requireAuth({ roles } = {}) {
 
     if (roles && !roles.includes(user.role)) {
         alert("You don't have access to this page.");
-        window.location.href = "homepage.html";
+        window.location.href = "index.html";
         return null;
     }
 
