@@ -29,9 +29,6 @@ app.use("/api/contact", contactRoutes);
 app.use("/api/requests", requestRoutes);
 
 app.use(express.static(FRONTEND_DIR));
-app.get("/", (req, res) => {
-  res.sendFile(path.join(FRONTEND_DIR, "homepage.html"));
-});
 
 app.use((err, req, res, next) => {
   console.error(err);
