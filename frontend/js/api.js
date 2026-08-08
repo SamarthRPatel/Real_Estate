@@ -4,6 +4,7 @@
 // this to "" instead to use relative "/api/..." calls.
 const API_BASE = "https://real-estate-api-yv53.onrender.com";
 
+
 export async function apiFetch(path, { method = "GET", body } = {}) {
   let res;
   try {

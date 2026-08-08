@@ -112,7 +112,12 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/logout", (req, res) => {
-  res.clearCookie("token");
+  // Must match the sameSite/secure options the cookie was set with (see
+  // setSessionCookie) — otherwise this clear instruction gets silently
+  // dropped in the cross-site (separate frontend/backend origins) setup,
+  // and the real session cookie survives untouched.
+  const isProd = process.env.NODE_ENV === "production";
+  res.clearCookie("token", { httpOnly: true, sameSite: isProd ? "none" : "lax", secure: isProd });
   res.json({ ok: true });
 });
 
