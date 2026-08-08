@@ -16,7 +16,7 @@ document.getElementById("loginForm").addEventListener("submit", async function (
 
         window.location.href = user.role === "admin" ? "Admi.html" : "dashboard.html";
     } catch (error) {
-        errorMessage.textContent = "Invalid email or password. Try again.";
+        errorMessage.textContent = error.message;
         errorMessage.style.color = "red";
     }
 });
