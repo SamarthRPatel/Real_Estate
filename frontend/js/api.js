@@ -1,10 +1,8 @@
-// Empty string = relative "/api/..." calls, which resolve correctly
-// whenever frontend and backend share an origin (local dev via
-// `npm start` in backend/, or any single-service deployment).
-// Split hosting (separate frontend/backend Render services) needs an
-// explicit absolute URL here instead — set it after deploying the
-// backend, using its Render dashboard URL.
-const API_BASE = "";
+// Points at the backend's own Render URL, since frontend and backend
+// are deployed as separate services with no shared origin. For local
+// dev (npm start in backend/) or any single-service deployment, set
+// this to "" instead to use relative "/api/..." calls.
+const API_BASE = "https://real-estate-api-yv53.onrender.com";
 
 export async function apiFetch(path, { method = "GET", body } = {}) {
   let res;
